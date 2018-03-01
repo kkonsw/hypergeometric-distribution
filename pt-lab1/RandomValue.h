@@ -6,6 +6,7 @@
 class RandomValue
 {
 public:
+
 	RandomValue();
 	double GetRandomValue();
 };
