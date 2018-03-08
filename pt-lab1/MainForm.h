@@ -14,13 +14,20 @@ namespace ptlab1 {
 	/// Сводка для MainForm
 	/// </summary>
 	public ref class MainForm : public System::Windows::Forms::Form
-	{
-		Experiment* experiment;
-		int count = 0;
+	{		
+	private: System::Windows::Forms::DataGridView^  dataGridView;		
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column1;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column2;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column3;
+
+			 Experiment* experiment;
+			 int count;
+			 int row;
 	public:
 		MainForm(void)
 		{
 			experiment = new Experiment();
+			count = 0; row = 0;
 			InitializeComponent();
 			//
 			//TODO: добавьте код конструктора
@@ -65,13 +72,18 @@ namespace ptlab1 {
 			this->M_textBox = (gcnew System::Windows::Forms::TextBox());
 			this->N_label = (gcnew System::Windows::Forms::Label());
 			this->M_label = (gcnew System::Windows::Forms::Label());
+			this->dataGridView = (gcnew System::Windows::Forms::DataGridView());
+			this->column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->column3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// mainButton
 			// 
 			this->mainButton->Location = System::Drawing::Point(42, 144);
 			this->mainButton->Name = L"mainButton";
-			this->mainButton->Size = System::Drawing::Size(196, 37);
+			this->mainButton->Size = System::Drawing::Size(198, 37);
 			this->mainButton->TabIndex = 0;
 			this->mainButton->Text = L"Получить результат эксперимента (одна лампочка)";
 			this->mainButton->UseVisualStyleBackColor = true;
@@ -79,7 +91,7 @@ namespace ptlab1 {
 			// 
 			// result_textBox
 			// 
-			this->result_textBox->Location = System::Drawing::Point(148, 187);
+			this->result_textBox->Location = System::Drawing::Point(150, 187);
 			this->result_textBox->Name = L"result_textBox";
 			this->result_textBox->Size = System::Drawing::Size(90, 20);
 			this->result_textBox->TabIndex = 1;
@@ -118,11 +130,52 @@ namespace ptlab1 {
 			this->M_label->TabIndex = 6;
 			this->M_label->Text = L"Число перегоревших";
 			// 
+			// dataGridView
+			// 
+			this->dataGridView->AllowUserToAddRows = false;
+			this->dataGridView->AllowUserToDeleteRows = false;
+			this->dataGridView->BackgroundColor = System::Drawing::SystemColors::Control;
+			this->dataGridView->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
+				this->column1,
+					this->column2, this->column3
+			});
+			this->dataGridView->Location = System::Drawing::Point(42, 213);
+			this->dataGridView->Name = L"dataGridView";
+			this->dataGridView->ReadOnly = true;
+			this->dataGridView->Size = System::Drawing::Size(198, 150);
+			this->dataGridView->TabIndex = 7;
+			// 
+			// column1
+			// 
+			this->column1->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->column1->HeaderText = L"y_i";
+			this->column1->Name = L"column1";
+			this->column1->ReadOnly = true;
+			this->column1->Width = 45;
+			// 
+			// column2
+			// 
+			this->column2->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->column2->HeaderText = L"n_i";
+			this->column2->Name = L"column2";
+			this->column2->ReadOnly = true;
+			this->column2->Width = 46;
+			// 
+			// column3
+			// 
+			this->column3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->column3->HeaderText = L"n_i / n";
+			this->column3->Name = L"column3";
+			this->column3->ReadOnly = true;
+			this->column3->Width = 63;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(310, 256);
+			this->ClientSize = System::Drawing::Size(300, 431);
+			this->Controls->Add(this->dataGridView);
 			this->Controls->Add(this->M_label);
 			this->Controls->Add(this->N_label);
 			this->Controls->Add(this->M_textBox);
@@ -131,6 +184,7 @@ namespace ptlab1 {
 			this->Controls->Add(this->mainButton);
 			this->Name = L"MainForm";
 			this->Text = L"Лаб. работа: моделирование случайной величины";
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -144,8 +198,9 @@ namespace ptlab1 {
 		for (int i = 0; i < 10000; i++)
 		count += experiment->GetOneBulb();
 
-		//result_textBox->Text = experiment->GetOneBulb().ToString();
 		result_textBox->Text = count.ToString();
+		dataGridView->Rows->Add();
+		dataGridView->Rows[row++]->Cells[0]->Value = count;
 	}
 	};
 }
