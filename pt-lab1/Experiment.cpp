@@ -27,6 +27,19 @@ int Experiment::GetOneBulb()
 }
 
 int Experiment::RunExperiment()
-{
-	return 0;
+{	
+	int result = 0;
+	int count = 0;
+
+	for (int i = 0; i < selectedBulbs; i++)
+	{
+		result = GetOneBulb();
+		if (result == 1) {
+			damagedBulbs--;
+			count++;
+		}
+		lightbulbs--;
+	}
+
+	return count;
 }
