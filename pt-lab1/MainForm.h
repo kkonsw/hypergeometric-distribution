@@ -16,18 +16,21 @@ namespace ptlab1 {
 	public ref class MainForm : public System::Windows::Forms::Form
 	{		
 	private: System::Windows::Forms::DataGridView^  dataGridView;		
+	private: System::Windows::Forms::TextBox^  R_textBox;
+	private: System::Windows::Forms::Label^  R_label;			 
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column1;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column2;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column3;
+	private: System::Windows::Forms::Button^  delete_button;
 
 			 Experiment* experiment;
-			 int count;
-			 int row;
+			 int count;		// число проведенных экспериментов
+			 int rows;		// число строк в таблице
 	public:
 		MainForm(void)
 		{
 			experiment = new Experiment();
-			count = 0; row = 0;
+			count = 0; rows = 0;
 			InitializeComponent();
 			//
 			//TODO: добавьте код конструктора
@@ -66,6 +69,8 @@ namespace ptlab1 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			this->mainButton = (gcnew System::Windows::Forms::Button());
 			this->result_textBox = (gcnew System::Windows::Forms::TextBox());
 			this->N_textBox = (gcnew System::Windows::Forms::TextBox());
@@ -76,46 +81,53 @@ namespace ptlab1 {
 			this->column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->column3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->R_textBox = (gcnew System::Windows::Forms::TextBox());
+			this->R_label = (gcnew System::Windows::Forms::Label());
+			this->delete_button = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// mainButton
 			// 
-			this->mainButton->Location = System::Drawing::Point(42, 144);
+			this->mainButton->Location = System::Drawing::Point(42, 129);
 			this->mainButton->Name = L"mainButton";
-			this->mainButton->Size = System::Drawing::Size(198, 37);
+			this->mainButton->Size = System::Drawing::Size(198, 52);
 			this->mainButton->TabIndex = 0;
-			this->mainButton->Text = L"Получить результат эксперимента (одна лампочка)";
+			this->mainButton->Text = L"Получить результат эксперимента (число перегоревших лампочек из числа выбранных)";
 			this->mainButton->UseVisualStyleBackColor = true;
 			this->mainButton->Click += gcnew System::EventHandler(this, &MainForm::mainButton_Click);
 			// 
 			// result_textBox
 			// 
-			this->result_textBox->Location = System::Drawing::Point(150, 187);
+			this->result_textBox->BackColor = System::Drawing::SystemColors::Window;
+			this->result_textBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->result_textBox->Location = System::Drawing::Point(173, 187);
 			this->result_textBox->Name = L"result_textBox";
-			this->result_textBox->Size = System::Drawing::Size(90, 20);
+			this->result_textBox->Size = System::Drawing::Size(65, 20);
 			this->result_textBox->TabIndex = 1;
 			// 
 			// N_textBox
 			// 
-			this->N_textBox->Location = System::Drawing::Point(29, 31);
+			this->N_textBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->N_textBox->Location = System::Drawing::Point(42, 31);
 			this->N_textBox->Name = L"N_textBox";
-			this->N_textBox->Size = System::Drawing::Size(100, 20);
+			this->N_textBox->Size = System::Drawing::Size(87, 20);
 			this->N_textBox->TabIndex = 2;
 			this->N_textBox->Text = L"100";
 			// 
 			// M_textBox
 			// 
-			this->M_textBox->Location = System::Drawing::Point(29, 58);
+			this->M_textBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->M_textBox->Location = System::Drawing::Point(42, 58);
 			this->M_textBox->Name = L"M_textBox";
-			this->M_textBox->Size = System::Drawing::Size(100, 20);
+			this->M_textBox->Size = System::Drawing::Size(87, 20);
 			this->M_textBox->TabIndex = 3;
 			this->M_textBox->Text = L"90";
 			// 
 			// N_label
 			// 
 			this->N_label->AutoSize = true;
-			this->N_label->Location = System::Drawing::Point(147, 38);
+			this->N_label->Location = System::Drawing::Point(147, 33);
 			this->N_label->Name = L"N_label";
 			this->N_label->Size = System::Drawing::Size(91, 13);
 			this->N_label->TabIndex = 5;
@@ -124,7 +136,7 @@ namespace ptlab1 {
 			// M_label
 			// 
 			this->M_label->AutoSize = true;
-			this->M_label->Location = System::Drawing::Point(147, 64);
+			this->M_label->Location = System::Drawing::Point(147, 60);
 			this->M_label->Name = L"M_label";
 			this->M_label->Size = System::Drawing::Size(114, 13);
 			this->M_label->TabIndex = 6;
@@ -143,7 +155,9 @@ namespace ptlab1 {
 			this->dataGridView->Location = System::Drawing::Point(42, 213);
 			this->dataGridView->Name = L"dataGridView";
 			this->dataGridView->ReadOnly = true;
-			this->dataGridView->Size = System::Drawing::Size(198, 150);
+			dataGridViewCellStyle2->NullValue = nullptr;
+			this->dataGridView->RowsDefaultCellStyle = dataGridViewCellStyle2;
+			this->dataGridView->Size = System::Drawing::Size(198, 206);
 			this->dataGridView->TabIndex = 7;
 			// 
 			// column1
@@ -165,16 +179,50 @@ namespace ptlab1 {
 			// column3
 			// 
 			this->column3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			dataGridViewCellStyle1->Format = L"N4";
+			dataGridViewCellStyle1->NullValue = nullptr;
+			this->column3->DefaultCellStyle = dataGridViewCellStyle1;
 			this->column3->HeaderText = L"n_i / n";
 			this->column3->Name = L"column3";
 			this->column3->ReadOnly = true;
 			this->column3->Width = 63;
 			// 
+			// R_textBox
+			// 
+			this->R_textBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->R_textBox->Location = System::Drawing::Point(42, 85);
+			this->R_textBox->Name = L"R_textBox";
+			this->R_textBox->Size = System::Drawing::Size(87, 20);
+			this->R_textBox->TabIndex = 8;
+			this->R_textBox->Text = L"50";
+			// 
+			// R_label
+			// 
+			this->R_label->AutoSize = true;
+			this->R_label->Location = System::Drawing::Point(147, 87);
+			this->R_label->Name = L"R_label";
+			this->R_label->Size = System::Drawing::Size(99, 13);
+			this->R_label->TabIndex = 9;
+			this->R_label->Text = L"Число выбранных";
+			// 
+			// delete_button
+			// 
+			this->delete_button->Location = System::Drawing::Point(42, 185);
+			this->delete_button->Name = L"delete_button";
+			this->delete_button->Size = System::Drawing::Size(125, 23);
+			this->delete_button->TabIndex = 10;
+			this->delete_button->Text = L"Очистить";
+			this->delete_button->UseVisualStyleBackColor = true;
+			this->delete_button->Click += gcnew System::EventHandler(this, &MainForm::delete_button_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(300, 431);
+			this->ClientSize = System::Drawing::Size(288, 447);
+			this->Controls->Add(this->delete_button);
+			this->Controls->Add(this->R_label);
+			this->Controls->Add(this->R_textBox);
 			this->Controls->Add(this->dataGridView);
 			this->Controls->Add(this->M_label);
 			this->Controls->Add(this->N_label);
@@ -182,6 +230,7 @@ namespace ptlab1 {
 			this->Controls->Add(this->N_textBox);
 			this->Controls->Add(this->result_textBox);
 			this->Controls->Add(this->mainButton);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Name = L"MainForm";
 			this->Text = L"Лаб. работа: моделирование случайной величины";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->EndInit();
@@ -193,14 +242,42 @@ namespace ptlab1 {
 	private: System::Void mainButton_Click(System::Object^  sender, System::EventArgs^  e) {	
 		experiment->SetAmountOfLightbulbs(System::Convert::ToInt32(N_textBox->Text));
 		experiment->SetAmountOfDamaged(System::Convert::ToInt32(M_textBox->Text));
-		count = 0;
+		experiment->SetAmountOfSelected(System::Convert::ToInt32(R_textBox->Text));
 
-		for (int i = 0; i < 10000; i++)
-		count += experiment->GetOneBulb();
+		double n = 0;	
+		bool flag = false;
+		int result = experiment->RunExperiment();
+		result_textBox->Text = result.ToString();
+		count++;		
 
-		result_textBox->Text = count.ToString();
-		dataGridView->Rows->Add();
-		dataGridView->Rows[row++]->Cells[0]->Value = count;
+		for (int i = 0; i < rows; i++)
+		{
+			if (result == System::Convert::ToInt32(dataGridView->Rows[i]->Cells[0]->Value)) {
+				n = System::Convert::ToInt32(dataGridView->Rows[i]->Cells[1]->Value) + 1;
+				dataGridView->Rows[i]->Cells[1]->Value = n;
+				flag = true;
+				break;
+			}
+		}
+
+		if (flag == false) {		
+			dataGridView->Rows->Add();
+			dataGridView->Rows[rows]->Cells[0]->Value = result;
+			dataGridView->Rows[rows]->Cells[1]->Value = 1;
+			rows++;
+		}	
+
+		for (int i = 0; i < rows; i++)
+		{
+			n = System::Convert::ToDouble(dataGridView->Rows[i]->Cells[1]->Value);
+			dataGridView->Rows[i]->Cells[2]->Value = n / count;
+		}
 	}
-	};
+
+	private: System::Void delete_button_Click(System::Object^  sender, System::EventArgs^  e) {	
+		dataGridView->Rows->Clear();
+		count = 0;
+		rows = 0;
+	}
+};
 }
