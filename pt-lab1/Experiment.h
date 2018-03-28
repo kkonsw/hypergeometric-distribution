@@ -10,6 +10,7 @@ protected:
 	int selectedBulbs;	// число выбранных лампочек
 
 	int GetOneBulb(); // взять лампочку, возвращает 1 если перегоревшая
+	int C(int n, int k); // число сочетаний (C из n по k)
 public:
 	Experiment();
 	Experiment(int n, int m, int r);
@@ -21,5 +22,9 @@ public:
 	void SetAmountOfDamaged(int const m) { damagedBulbs = m; }
 	void SetAmountOfSelected(int const r) { selectedBulbs = r; }
 	
-	int RunExperiment();
+	// теоретическая вероятность получить k бракованных лампочек
+	double GetProbability(int const k); 
+	int RunExperiment();	 // возвращает результат эксперимента:
+						     // случайное число бракованных лампочек из числа выбранных
+	
 };

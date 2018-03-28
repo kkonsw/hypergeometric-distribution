@@ -26,6 +26,27 @@ int Experiment::GetOneBulb()
 	else return 0;
 }
 
+int Experiment::C(int n, int k)
+{
+	if (k == 0 || k == n)
+		return 1;
+	return C(n - 1, k - 1) * n / k;
+}
+
+double Experiment::GetProbability(int const k)
+{
+	int n = GetAmountOfLightbulbs();
+	int m = GetAmountOfDamaged();
+	int r = GetAmountOfSelected();
+
+	if ((k < 0) || (k > m)) return 0;
+	else
+	{
+		double result = (double)(C(m, k) * C(n - m, r - k)) / (double)(C(n, r));
+		return result;
+	}
+}
+
 int Experiment::RunExperiment()
 {	
 	int result = 0;
