@@ -1,8 +1,9 @@
 #pragma once
+#include <vector>
+#include <algorithm>
 #include "Experiment.h"
 
 namespace ptlab1 {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -25,14 +26,20 @@ namespace ptlab1 {
 	private: System::Windows::Forms::TextBox^  textBox;
 	private: System::Windows::Forms::Label^  label;
 
-			 Experiment* experiment;
+			 Experiment* experiment;			 
+			 std::vector<int> *results;
+			 std::vector<double> *frequencies;
+
 			 int rows;		// число строк в таблице			 
 			 int count;		// число проведенных экспериментов
 	public:
 		MainForm(void)
 		{
 			experiment = new Experiment();
+			results = new std::vector<int>;
+			frequencies = new std::vector<double>;
 			count = 0; rows = 0;
+
 			InitializeComponent();
 			//
 			//TODO: добавьте код конструктора
@@ -71,8 +78,8 @@ namespace ptlab1 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle4 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle3 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			this->mainButton = (gcnew System::Windows::Forms::Button());
 			this->N_textBox = (gcnew System::Windows::Forms::TextBox());
 			this->M_textBox = (gcnew System::Windows::Forms::TextBox());
@@ -107,7 +114,7 @@ namespace ptlab1 {
 			this->N_textBox->Name = L"N_textBox";
 			this->N_textBox->Size = System::Drawing::Size(87, 20);
 			this->N_textBox->TabIndex = 2;
-			this->N_textBox->Text = L"100";
+			this->N_textBox->Text = L"10";
 			// 
 			// M_textBox
 			// 
@@ -116,7 +123,7 @@ namespace ptlab1 {
 			this->M_textBox->Name = L"M_textBox";
 			this->M_textBox->Size = System::Drawing::Size(87, 20);
 			this->M_textBox->TabIndex = 3;
-			this->M_textBox->Text = L"90";
+			this->M_textBox->Text = L"5";
 			// 
 			// N_label
 			// 
@@ -149,8 +156,8 @@ namespace ptlab1 {
 			this->dataGridView->Location = System::Drawing::Point(42, 214);
 			this->dataGridView->Name = L"dataGridView";
 			this->dataGridView->ReadOnly = true;
-			dataGridViewCellStyle2->NullValue = nullptr;
-			this->dataGridView->RowsDefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle4->NullValue = nullptr;
+			this->dataGridView->RowsDefaultCellStyle = dataGridViewCellStyle4;
 			this->dataGridView->Size = System::Drawing::Size(198, 206);
 			this->dataGridView->TabIndex = 7;
 			// 
@@ -173,9 +180,9 @@ namespace ptlab1 {
 			// column3
 			// 
 			this->column3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			dataGridViewCellStyle1->Format = L"N4";
-			dataGridViewCellStyle1->NullValue = nullptr;
-			this->column3->DefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle3->Format = L"N4";
+			dataGridViewCellStyle3->NullValue = nullptr;
+			this->column3->DefaultCellStyle = dataGridViewCellStyle3;
 			this->column3->HeaderText = L"n_i / n";
 			this->column3->Name = L"column3";
 			this->column3->ReadOnly = true;
@@ -188,7 +195,7 @@ namespace ptlab1 {
 			this->R_textBox->Name = L"R_textBox";
 			this->R_textBox->Size = System::Drawing::Size(87, 20);
 			this->R_textBox->TabIndex = 8;
-			this->R_textBox->Text = L"50";
+			this->R_textBox->Text = L"5";
 			// 
 			// R_label
 			// 
@@ -231,7 +238,7 @@ namespace ptlab1 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(288, 495);
+			this->ClientSize = System::Drawing::Size(728, 495);
 			this->Controls->Add(this->label);
 			this->Controls->Add(this->textBox);
 			this->Controls->Add(this->delete_button);
@@ -262,14 +269,15 @@ namespace ptlab1 {
 		for (int j = 0; j < nExperiments; j++)
 		{
 			experiment->SetAmountOfLightbulbs(System::Convert::ToInt32(N_textBox->Text));
-			experiment->SetAmountOfDamaged(System::Convert::ToInt32(M_textBox->Text));
 			experiment->SetAmountOfSelected(System::Convert::ToInt32(R_textBox->Text));
+			experiment->SetAmountOfDamaged(System::Convert::ToInt32(M_textBox->Text));		
 
 			n = 0;
 			flag = false;
 			result = experiment->RunExperiment();
 			count++;
 
+			// ищем результат в таблице
 			for (i = 0; i < rows; i++)
 			{
 				if (result == System::Convert::ToInt32(dataGridView->Rows[i]->Cells[0]->Value)) {
@@ -280,23 +288,34 @@ namespace ptlab1 {
 				}
 			}
 
+			// если не нашли, то добавляем в таблицу
 			if (flag == false) {
-				dataGridView->Rows->Add();
+				results->push_back(result); // также добавляем в массив результатов 
+				std::sort(results->begin(), results->end()); // и сортируем 
+				dataGridView->Rows->Add();			
 				dataGridView->Rows[rows]->Cells[0]->Value = result;
 				dataGridView->Rows[rows]->Cells[1]->Value = 1;
+				dataGridView->Sort(column1, System::ComponentModel::ListSortDirection::Ascending);
 				rows++;
 			}
 
+			// обновление частот с учетом нового эксперимента
 			for (i = 0; i < rows; i++)
 			{
+				frequencies->clear();
 				n = System::Convert::ToDouble(dataGridView->Rows[i]->Cells[1]->Value);
 				dataGridView->Rows[i]->Cells[2]->Value = n / count;
+
+				// также добавляем в массив частот
+				frequencies->push_back(System::Convert::ToDouble(dataGridView->Rows[i]->Cells[2]->Value));
 			}
 		}
 	}
 
 	private: System::Void delete_button_Click(System::Object^  sender, System::EventArgs^  e) {	
 		dataGridView->Rows->Clear();
+		frequencies->clear();
+		results->clear();		
 		count = 0;
 		rows = 0;
 	}
