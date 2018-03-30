@@ -5,11 +5,11 @@ class Experiment
 {
 protected:
 	RandomValue Generator;
-	int lightbulbs;		// общее число лампочек
-	int damagedBulbs;	// перегоревшие лампочки
-	int selectedBulbs;	// число выбранных лампочек
+	int lightbulbs;		 // общее число лампочек
+	int damagedBulbs;	 // перегоревшие лампочки
+	int selectedBulbs;	 // число выбранных лампочек
 
-	int GetOneBulb(); // взять лампочку, возвращает 1 если перегоревшая
+	int GetOneBulb();	 // взять лампочку, возвращает 1 если перегоревшая
 	int C(int n, int k); // число сочетаний (C из n по k)
 public:
 	Experiment();

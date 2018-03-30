@@ -22,20 +22,29 @@ namespace ptlab1 {
 	private: System::Windows::Forms::Button^  delete_button;		 
 	private: System::Windows::Forms::TextBox^  textBox;
 	private: System::Windows::Forms::Label^  label;			 
-
-
-
-
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column1;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column2;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column3;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column4;			 
+	private: System::Windows::Forms::DataGridView^  dataGridView_table;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_1;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_2;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_3;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_4;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_5;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_6;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_7;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_8;
+	private: System::Windows::Forms::Label^  table_label;
+	private: System::Windows::Forms::Label^  maxError_label;
+	private: System::Windows::Forms::TextBox^  maxError_textBox;
 
 			 Experiment* experiment;
 			 std::vector<int> *results;
 			 std::vector<double> *frequencies;
 			 int rows;		// число строк в таблице
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column1;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column2;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  column3;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column4;
 			 int count;		// число проведенных экспериментов
+
 	public:
 		MainForm(void)
 		{
@@ -61,9 +70,9 @@ namespace ptlab1 {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^  mainButton;
-	protected:
 
+	protected:
+	private: System::Windows::Forms::Button^  mainButton;
 	private: System::Windows::Forms::TextBox^  N_textBox;
 	private: System::Windows::Forms::TextBox^  M_textBox;
 	private: System::Windows::Forms::Label^  N_label;
@@ -91,16 +100,29 @@ namespace ptlab1 {
 			this->N_label = (gcnew System::Windows::Forms::Label());
 			this->M_label = (gcnew System::Windows::Forms::Label());
 			this->dataGridView = (gcnew System::Windows::Forms::DataGridView());
+			this->column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->column3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column4 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->R_textBox = (gcnew System::Windows::Forms::TextBox());
 			this->R_label = (gcnew System::Windows::Forms::Label());
 			this->delete_button = (gcnew System::Windows::Forms::Button());
 			this->textBox = (gcnew System::Windows::Forms::TextBox());
 			this->label = (gcnew System::Windows::Forms::Label());
-			this->column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->column3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Column4 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->dataGridView_table = (gcnew System::Windows::Forms::DataGridView());
+			this->Column_1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column_2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column_3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column_4 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column_5 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column_6 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column_7 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column_8 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->table_label = (gcnew System::Windows::Forms::Label());
+			this->maxError_label = (gcnew System::Windows::Forms::Label());
+			this->maxError_textBox = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_table))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// mainButton
@@ -167,6 +189,48 @@ namespace ptlab1 {
 			this->dataGridView->Size = System::Drawing::Size(264, 238);
 			this->dataGridView->TabIndex = 7;
 			// 
+			// column1
+			// 
+			this->column1->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
+			this->column1->HeaderText = L"y_i";
+			this->column1->Name = L"column1";
+			this->column1->ReadOnly = true;
+			this->column1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->column1->Width = 45;
+			// 
+			// column2
+			// 
+			this->column2->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
+			this->column2->HeaderText = L"n_i";
+			this->column2->Name = L"column2";
+			this->column2->ReadOnly = true;
+			this->column2->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->column2->Width = 45;
+			// 
+			// column3
+			// 
+			this->column3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
+			dataGridViewCellStyle1->Format = L"N4";
+			dataGridViewCellStyle1->NullValue = nullptr;
+			this->column3->DefaultCellStyle = dataGridViewCellStyle1;
+			this->column3->HeaderText = L"n_i / n";
+			this->column3->Name = L"column3";
+			this->column3->ReadOnly = true;
+			this->column3->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->column3->Width = 65;
+			// 
+			// Column4
+			// 
+			this->Column4->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
+			dataGridViewCellStyle2->Format = L"N4";
+			dataGridViewCellStyle2->NullValue = nullptr;
+			this->Column4->DefaultCellStyle = dataGridViewCellStyle2;
+			this->Column4->HeaderText = L"p( y_i )";
+			this->Column4->Name = L"Column4";
+			this->Column4->ReadOnly = true;
+			this->Column4->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column4->Width = 65;
+			// 
 			// R_textBox
 			// 
 			this->R_textBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
@@ -213,53 +277,105 @@ namespace ptlab1 {
 			this->label->TabIndex = 12;
 			this->label->Text = L"Число экспериментов";
 			// 
-			// column1
+			// dataGridView_table
 			// 
-			this->column1->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
-			this->column1->HeaderText = L"y_i";
-			this->column1->Name = L"column1";
-			this->column1->ReadOnly = true;
-			this->column1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->column1->Width = 45;
+			this->dataGridView_table->BackgroundColor = System::Drawing::SystemColors::Control;
+			this->dataGridView_table->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView_table->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
+				this->Column_1,
+					this->Column_2, this->Column_3, this->Column_4, this->Column_5, this->Column_6, this->Column_7, this->Column_8
+			});
+			this->dataGridView_table->Location = System::Drawing::Point(361, 60);
+			this->dataGridView_table->Name = L"dataGridView_table";
+			this->dataGridView_table->Size = System::Drawing::Size(399, 45);
+			this->dataGridView_table->TabIndex = 13;
 			// 
-			// column2
+			// Column_1
 			// 
-			this->column2->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
-			this->column2->HeaderText = L"n_i";
-			this->column2->Name = L"column2";
-			this->column2->ReadOnly = true;
-			this->column2->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->column2->Width = 45;
+			this->Column_1->HeaderText = L"M";
+			this->Column_1->Name = L"Column_1";
+			this->Column_1->Width = 40;
 			// 
-			// column3
+			// Column_2
 			// 
-			this->column3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
-			dataGridViewCellStyle1->Format = L"N4";
-			dataGridViewCellStyle1->NullValue = nullptr;
-			this->column3->DefaultCellStyle = dataGridViewCellStyle1;
-			this->column3->HeaderText = L"n_i / n";
-			this->column3->Name = L"column3";
-			this->column3->ReadOnly = true;
-			this->column3->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->column3->Width = 65;
+			this->Column_2->HeaderText = L"M\'";
+			this->Column_2->Name = L"Column_2";
+			this->Column_2->Width = 40;
 			// 
-			// Column4
+			// Column_3
 			// 
-			this->Column4->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
-			dataGridViewCellStyle2->Format = L"N4";
-			dataGridViewCellStyle2->NullValue = nullptr;
-			this->Column4->DefaultCellStyle = dataGridViewCellStyle2;
-			this->Column4->HeaderText = L"p( y_i )";
-			this->Column4->Name = L"Column4";
-			this->Column4->ReadOnly = true;
-			this->Column4->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Column4->Width = 65;
+			this->Column_3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->Column_3->HeaderText = L"|M-M\'|";
+			this->Column_3->Name = L"Column_3";
+			this->Column_3->Width = 59;
+			// 
+			// Column_4
+			// 
+			this->Column_4->HeaderText = L"D";
+			this->Column_4->Name = L"Column_4";
+			this->Column_4->Width = 40;
+			// 
+			// Column_5
+			// 
+			this->Column_5->HeaderText = L"D\'";
+			this->Column_5->Name = L"Column_5";
+			this->Column_5->Width = 40;
+			// 
+			// Column_6
+			// 
+			this->Column_6->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->Column_6->HeaderText = L"|D-D\'|";
+			this->Column_6->Name = L"Column_6";
+			this->Column_6->Width = 57;
+			// 
+			// Column_7
+			// 
+			this->Column_7->HeaderText = L"Me";
+			this->Column_7->Name = L"Column_7";
+			this->Column_7->Width = 40;
+			// 
+			// Column_8
+			// 
+			this->Column_8->HeaderText = L"R";
+			this->Column_8->Name = L"Column_8";
+			this->Column_8->Width = 40;
+			// 
+			// table_label
+			// 
+			this->table_label->AutoSize = true;
+			this->table_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.25F));
+			this->table_label->Location = System::Drawing::Point(451, 34);
+			this->table_label->Name = L"table_label";
+			this->table_label->Size = System::Drawing::Size(183, 17);
+			this->table_label->TabIndex = 14;
+			this->table_label->Text = L"Числовые характеристики";
+			// 
+			// maxError_label
+			// 
+			this->maxError_label->AutoSize = true;
+			this->maxError_label->Location = System::Drawing::Point(424, 114);
+			this->maxError_label->Name = L"maxError_label";
+			this->maxError_label->Size = System::Drawing::Size(230, 13);
+			this->maxError_label->TabIndex = 15;
+			this->maxError_label->Text = L"Максимальное отклонение | n_i/n - p(y_i) | = ";
+			// 
+			// maxError_textBox
+			// 
+			this->maxError_textBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->maxError_textBox->Location = System::Drawing::Point(660, 111);
+			this->maxError_textBox->Name = L"maxError_textBox";
+			this->maxError_textBox->Size = System::Drawing::Size(100, 20);
+			this->maxError_textBox->TabIndex = 16;
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(728, 479);
+			this->ClientSize = System::Drawing::Size(832, 479);
+			this->Controls->Add(this->maxError_textBox);
+			this->Controls->Add(this->maxError_label);
+			this->Controls->Add(this->table_label);
+			this->Controls->Add(this->dataGridView_table);
 			this->Controls->Add(this->label);
 			this->Controls->Add(this->textBox);
 			this->Controls->Add(this->delete_button);
@@ -273,8 +389,9 @@ namespace ptlab1 {
 			this->Controls->Add(this->mainButton);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Name = L"MainForm";
-			this->Text = L"Лаб. работа: моделирование случайной величины";
+			this->Text = L"Лаб. работа: моделирование случайной величины - вариант 15";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_table))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

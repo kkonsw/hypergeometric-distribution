@@ -42,6 +42,7 @@ double Experiment::GetProbability(int const k)
 	if ((k < 0) || (k > m)) return 0;
 	else
 	{
+		// формула гипергеометрического распределения
 		double result = (double)(C(m, k) * C(n - m, r - k)) / (double)(C(n, r));
 		return result;
 	}
