@@ -5,6 +5,8 @@ Experiment::Experiment()
 	lightbulbs = 0;
 	damagedBulbs = 0;
 	selectedBulbs = 0;
+	result_min = 0;
+	result_max = 0;
 }
 
 Experiment::Experiment(int n, int m, int r)
@@ -12,6 +14,7 @@ Experiment::Experiment(int n, int m, int r)
 	lightbulbs = n;
 	damagedBulbs = m;
 	selectedBulbs = r;
+	SetUpResults();
 }
 
 int Experiment::GetOneBulb()
@@ -48,6 +51,9 @@ void Experiment::SetUpResults()
 
 	if (m < r) k_max = m;
 	else k_max = r;
+
+	result_min = k_min;
+	result_max = k_max;
 
 	results.clear();
 	for (int k = k_min; k <= k_max; k++)

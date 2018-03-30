@@ -9,6 +9,9 @@ protected:
 	int lightbulbs;		 // общее число лампочек
 	int damagedBulbs;	 // перегоревшие лампочки
 	int selectedBulbs;	 // число выбранных лампочек
+	int result_min;		 // максимально возможный результат эксперимента
+	int result_max;		 // минимально возможный результат эксперимента
+
 	std::vector<int> results;		   // все возможные результаты текущего эксперимента
 	std::vector<double> probabilities; // теоретические вероятности, соответствующие результатам
 
@@ -29,6 +32,8 @@ public:
 	// характеристики эксперимента
 	double GetExpectedValue(); // мат. ожидание при текущих параметрах
 	double GetDispersion();	   // дисперсия 
+	int GetMinResult() { return result_min;  }
+	int GetMaxResult() { return result_max;  }
 	
 	// теоретическая вероятность получить k бракованных лампочек
 	double GetProbability(int const k); 

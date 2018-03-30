@@ -50,6 +50,11 @@ namespace ptlab1 {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_6;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_7;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_8;
+	private: System::Windows::Forms::DataVisualization::Charting::Chart^  chart;
+	private: System::Windows::Forms::Label^  graphics_label;
+	private: System::Windows::Forms::Label^  divergency_label;
+	private: System::Windows::Forms::TextBox^  divergency_textBox;
+
 	private: System::Windows::Forms::Label^  M_label;
 
 	public:
@@ -90,17 +95,21 @@ namespace ptlab1 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle58 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle56 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle57 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle59 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle60 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle61 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle62 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle63 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle64 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle65 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle66 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle3 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle4 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle5 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle6 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle7 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle8 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle9 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle10 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle11 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->mainButton = (gcnew System::Windows::Forms::Button());
 			this->N_textBox = (gcnew System::Windows::Forms::TextBox());
 			this->M_textBox = (gcnew System::Windows::Forms::TextBox());
@@ -128,8 +137,13 @@ namespace ptlab1 {
 			this->table_label = (gcnew System::Windows::Forms::Label());
 			this->maxError_label = (gcnew System::Windows::Forms::Label());
 			this->maxError_textBox = (gcnew System::Windows::Forms::TextBox());
+			this->chart = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
+			this->graphics_label = (gcnew System::Windows::Forms::Label());
+			this->divergency_label = (gcnew System::Windows::Forms::Label());
+			this->divergency_textBox = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_table))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// mainButton
@@ -191,8 +205,8 @@ namespace ptlab1 {
 			this->dataGridView->Location = System::Drawing::Point(42, 214);
 			this->dataGridView->Name = L"dataGridView";
 			this->dataGridView->ReadOnly = true;
-			dataGridViewCellStyle58->NullValue = nullptr;
-			this->dataGridView->RowsDefaultCellStyle = dataGridViewCellStyle58;
+			dataGridViewCellStyle3->NullValue = nullptr;
+			this->dataGridView->RowsDefaultCellStyle = dataGridViewCellStyle3;
 			this->dataGridView->Size = System::Drawing::Size(264, 238);
 			this->dataGridView->TabIndex = 7;
 			// 
@@ -217,9 +231,9 @@ namespace ptlab1 {
 			// column3
 			// 
 			this->column3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
-			dataGridViewCellStyle56->Format = L"N4";
-			dataGridViewCellStyle56->NullValue = nullptr;
-			this->column3->DefaultCellStyle = dataGridViewCellStyle56;
+			dataGridViewCellStyle1->Format = L"N4";
+			dataGridViewCellStyle1->NullValue = nullptr;
+			this->column3->DefaultCellStyle = dataGridViewCellStyle1;
 			this->column3->HeaderText = L"n_i / n";
 			this->column3->Name = L"column3";
 			this->column3->ReadOnly = true;
@@ -229,9 +243,9 @@ namespace ptlab1 {
 			// Column4
 			// 
 			this->Column4->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
-			dataGridViewCellStyle57->Format = L"N4";
-			dataGridViewCellStyle57->NullValue = nullptr;
-			this->Column4->DefaultCellStyle = dataGridViewCellStyle57;
+			dataGridViewCellStyle2->Format = L"N4";
+			dataGridViewCellStyle2->NullValue = nullptr;
+			this->Column4->DefaultCellStyle = dataGridViewCellStyle2;
 			this->Column4->HeaderText = L"p( y_i )";
 			this->Column4->Name = L"Column4";
 			this->Column4->ReadOnly = true;
@@ -299,9 +313,9 @@ namespace ptlab1 {
 			// 
 			// Column_1
 			// 
-			dataGridViewCellStyle59->Format = L"N2";
-			dataGridViewCellStyle59->NullValue = nullptr;
-			this->Column_1->DefaultCellStyle = dataGridViewCellStyle59;
+			dataGridViewCellStyle4->Format = L"N2";
+			dataGridViewCellStyle4->NullValue = nullptr;
+			this->Column_1->DefaultCellStyle = dataGridViewCellStyle4;
 			this->Column_1->HeaderText = L"M";
 			this->Column_1->Name = L"Column_1";
 			this->Column_1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
@@ -309,9 +323,9 @@ namespace ptlab1 {
 			// 
 			// Column_2
 			// 
-			dataGridViewCellStyle60->Format = L"N2";
-			dataGridViewCellStyle60->NullValue = nullptr;
-			this->Column_2->DefaultCellStyle = dataGridViewCellStyle60;
+			dataGridViewCellStyle5->Format = L"N2";
+			dataGridViewCellStyle5->NullValue = nullptr;
+			this->Column_2->DefaultCellStyle = dataGridViewCellStyle5;
 			this->Column_2->HeaderText = L"M\'";
 			this->Column_2->Name = L"Column_2";
 			this->Column_2->Resizable = System::Windows::Forms::DataGridViewTriState::False;
@@ -320,9 +334,9 @@ namespace ptlab1 {
 			// Column_3
 			// 
 			this->Column_3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			dataGridViewCellStyle61->Format = L"N5";
-			dataGridViewCellStyle61->NullValue = nullptr;
-			this->Column_3->DefaultCellStyle = dataGridViewCellStyle61;
+			dataGridViewCellStyle6->Format = L"N5";
+			dataGridViewCellStyle6->NullValue = nullptr;
+			this->Column_3->DefaultCellStyle = dataGridViewCellStyle6;
 			this->Column_3->HeaderText = L"|M-M\'|";
 			this->Column_3->Name = L"Column_3";
 			this->Column_3->Resizable = System::Windows::Forms::DataGridViewTriState::False;
@@ -330,9 +344,9 @@ namespace ptlab1 {
 			// 
 			// Column_4
 			// 
-			dataGridViewCellStyle62->Format = L"N2";
-			dataGridViewCellStyle62->NullValue = nullptr;
-			this->Column_4->DefaultCellStyle = dataGridViewCellStyle62;
+			dataGridViewCellStyle7->Format = L"N2";
+			dataGridViewCellStyle7->NullValue = nullptr;
+			this->Column_4->DefaultCellStyle = dataGridViewCellStyle7;
 			this->Column_4->HeaderText = L"D";
 			this->Column_4->Name = L"Column_4";
 			this->Column_4->Resizable = System::Windows::Forms::DataGridViewTriState::False;
@@ -340,9 +354,9 @@ namespace ptlab1 {
 			// 
 			// Column_5
 			// 
-			dataGridViewCellStyle63->Format = L"N2";
-			dataGridViewCellStyle63->NullValue = nullptr;
-			this->Column_5->DefaultCellStyle = dataGridViewCellStyle63;
+			dataGridViewCellStyle8->Format = L"N2";
+			dataGridViewCellStyle8->NullValue = nullptr;
+			this->Column_5->DefaultCellStyle = dataGridViewCellStyle8;
 			this->Column_5->HeaderText = L"D\'";
 			this->Column_5->Name = L"Column_5";
 			this->Column_5->Resizable = System::Windows::Forms::DataGridViewTriState::False;
@@ -351,9 +365,9 @@ namespace ptlab1 {
 			// Column_6
 			// 
 			this->Column_6->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			dataGridViewCellStyle64->Format = L"N5";
-			dataGridViewCellStyle64->NullValue = nullptr;
-			this->Column_6->DefaultCellStyle = dataGridViewCellStyle64;
+			dataGridViewCellStyle9->Format = L"N5";
+			dataGridViewCellStyle9->NullValue = nullptr;
+			this->Column_6->DefaultCellStyle = dataGridViewCellStyle9;
 			this->Column_6->HeaderText = L"|D-D\'|";
 			this->Column_6->Name = L"Column_6";
 			this->Column_6->Resizable = System::Windows::Forms::DataGridViewTriState::False;
@@ -361,9 +375,9 @@ namespace ptlab1 {
 			// 
 			// Column_7
 			// 
-			dataGridViewCellStyle65->Format = L"N2";
-			dataGridViewCellStyle65->NullValue = nullptr;
-			this->Column_7->DefaultCellStyle = dataGridViewCellStyle65;
+			dataGridViewCellStyle10->Format = L"N2";
+			dataGridViewCellStyle10->NullValue = nullptr;
+			this->Column_7->DefaultCellStyle = dataGridViewCellStyle10;
 			this->Column_7->HeaderText = L"Me";
 			this->Column_7->Name = L"Column_7";
 			this->Column_7->Resizable = System::Windows::Forms::DataGridViewTriState::False;
@@ -371,8 +385,8 @@ namespace ptlab1 {
 			// 
 			// Column_8
 			// 
-			dataGridViewCellStyle66->NullValue = nullptr;
-			this->Column_8->DefaultCellStyle = dataGridViewCellStyle66;
+			dataGridViewCellStyle11->NullValue = nullptr;
+			this->Column_8->DefaultCellStyle = dataGridViewCellStyle11;
 			this->Column_8->HeaderText = L"R";
 			this->Column_8->Name = L"Column_8";
 			this->Column_8->Resizable = System::Windows::Forms::DataGridViewTriState::False;
@@ -384,9 +398,9 @@ namespace ptlab1 {
 			this->table_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.25F));
 			this->table_label->Location = System::Drawing::Point(475, 34);
 			this->table_label->Name = L"table_label";
-			this->table_label->Size = System::Drawing::Size(183, 17);
+			this->table_label->Size = System::Drawing::Size(187, 17);
 			this->table_label->TabIndex = 14;
-			this->table_label->Text = L"Числовые характеристики";
+			this->table_label->Text = L"Числовые характеристики:";
 			// 
 			// maxError_label
 			// 
@@ -405,11 +419,82 @@ namespace ptlab1 {
 			this->maxError_textBox->Size = System::Drawing::Size(115, 20);
 			this->maxError_textBox->TabIndex = 16;
 			// 
+			// chart
+			// 
+			this->chart->BackSecondaryColor = System::Drawing::Color::White;
+			this->chart->BorderlineColor = System::Drawing::Color::Black;
+			this->chart->BorderlineDashStyle = System::Windows::Forms::DataVisualization::Charting::ChartDashStyle::Solid;
+			chartArea1->AxisX->MajorGrid->LineColor = System::Drawing::Color::LightGray;
+			chartArea1->AxisX->Minimum = 0;
+			chartArea1->AxisY->MajorGrid->LineColor = System::Drawing::Color::LightGray;
+			chartArea1->AxisY->Maximum = 1.2;
+			chartArea1->BackColor = System::Drawing::Color::White;
+			chartArea1->Name = L"ChartArea1";
+			this->chart->ChartAreas->Add(chartArea1);
+			legend1->MaximumAutoSize = 80;
+			legend1->Name = L"Legend1";
+			legend1->Position->Auto = false;
+			legend1->Position->Height = 15;
+			legend1->Position->Width = 30.88671F;
+			legend1->Position->X = 15;
+			legend1->Position->Y = 5;
+			this->chart->Legends->Add(legend1);
+			this->chart->Location = System::Drawing::Point(343, 182);
+			this->chart->Name = L"chart";
+			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::StepLine;
+			series1->Legend = L"Legend1";
+			series1->LegendText = L"Теоретическая";
+			series1->Name = L"Series1";
+			series2->ChartArea = L"ChartArea1";
+			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::StepLine;
+			series2->Legend = L"Legend1";
+			series2->LegendText = L"Выборочная";
+			series2->Name = L"Series2";
+			series2->YValuesPerPoint = 2;
+			this->chart->Series->Add(series1);
+			this->chart->Series->Add(series2);
+			this->chart->Size = System::Drawing::Size(460, 270);
+			this->chart->TabIndex = 17;
+			this->chart->Text = L"chart";
+			// 
+			// graphics_label
+			// 
+			this->graphics_label->AutoSize = true;
+			this->graphics_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.25F));
+			this->graphics_label->Location = System::Drawing::Point(340, 156);
+			this->graphics_label->Name = L"graphics_label";
+			this->graphics_label->Size = System::Drawing::Size(178, 17);
+			this->graphics_label->TabIndex = 18;
+			this->graphics_label->Text = L"Функции распределения:";
+			// 
+			// divergency_label
+			// 
+			this->divergency_label->AutoSize = true;
+			this->divergency_label->Location = System::Drawing::Point(566, 160);
+			this->divergency_label->Name = L"divergency_label";
+			this->divergency_label->Size = System::Drawing::Size(116, 13);
+			this->divergency_label->TabIndex = 19;
+			this->divergency_label->Text = L"Мера расхождения = ";
+			// 
+			// divergency_textBox
+			// 
+			this->divergency_textBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->divergency_textBox->Location = System::Drawing::Point(688, 156);
+			this->divergency_textBox->Name = L"divergency_textBox";
+			this->divergency_textBox->Size = System::Drawing::Size(115, 20);
+			this->divergency_textBox->TabIndex = 20;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::SystemColors::Control;
 			this->ClientSize = System::Drawing::Size(832, 479);
+			this->Controls->Add(this->divergency_textBox);
+			this->Controls->Add(this->divergency_label);
+			this->Controls->Add(this->graphics_label);
+			this->Controls->Add(this->chart);
 			this->Controls->Add(this->maxError_textBox);
 			this->Controls->Add(this->maxError_label);
 			this->Controls->Add(this->table_label);
@@ -430,6 +515,7 @@ namespace ptlab1 {
 			this->Text = L"Лаб. работа: моделирование случайной величины - вариант 15";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_table))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -447,5 +533,6 @@ namespace ptlab1 {
 
 	// расчет основных характеристик на основе проведенных экспериментов
 		void CalculateCharacteristics();
+		void DrawGraphics(); // построение графиков функций распределения
 	};
 }

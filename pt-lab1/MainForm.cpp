@@ -83,12 +83,15 @@ System::Void ptlab1::MainForm::mainButton_Click(System::Object ^ sender, System:
 
 	// также требуется рассчитать характеристики
 	CalculateCharacteristics();
+	DrawGraphics(); // и построить графики функций распределения
 }
 
 System::Void ptlab1::MainForm::delete_button_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
 	dataGridView->Rows->Clear();
 	dataGridView_table->Rows->Clear();
+	chart->Series[0]->Points->Clear();
+	chart->Series[1]->Points->Clear();
 	frequencies->clear();
 	results->clear();
 	expandedResults->clear();
@@ -179,4 +182,39 @@ void ptlab1::MainForm::CalculateCharacteristics()
 	dataGridView_table->ClearSelection();
 
 	maxError_textBox->Text = System::Convert::ToString(maxError); // максимальное отклонение частоты от вероятности
+}
+
+void ptlab1::MainForm::DrawGraphics()
+{	
+	chart->Series[0]->Points->Clear();
+	chart->Series[1]->Points->Clear();
+
+	// пересоздаем условия эксперимента для построения теор. ф-ии распределения
+	experiment->SetAmountOfLightbulbs(System::Convert::ToInt32(N_textBox->Text));
+	experiment->SetAmountOfSelected(System::Convert::ToInt32(R_textBox->Text));
+	experiment->SetAmountOfDamaged(System::Convert::ToInt32(M_textBox->Text));
+
+	double sum = 0.0;
+
+	// теоретическая функция распределения
+	int res_min = experiment->GetMinResult();
+	int res_max = experiment->GetMaxResult();
+	chart->ChartAreas[0]->AxisX->Maximum = res_max + 1;
+	chart->Series[0]->Points->AddXY(0, 0);
+	for (int x = res_min; x <= res_max; x++)
+	{
+		sum += experiment->GetProbability(x);
+		chart->Series[0]->Points->AddXY(x, sum);
+	}
+	chart->Series[0]->Points->AddXY(res_max + 1, 1);
+	
+	// выборочная функция распределения
+	sum = 0.0;
+	chart->Series[1]->Points->AddXY(0, 0);
+	for (int i = 0; i < results->size(); i++)
+	{
+		sum += frequencies->at(i);
+		chart->Series[1]->Points->AddXY(results->at(i), sum);	
+	}
+	chart->Series[1]->Points->AddXY(res_max + 1, 1);
 }
