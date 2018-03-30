@@ -16,7 +16,7 @@ Experiment::Experiment(int n, int m, int r)
 
 int Experiment::GetOneBulb()
 {
-	double p = 0;
+	double p = 0.0;
 	double u = Generator.GetRandomValue(); // получаем случайное значение на [0, 1]
 
 	// p - вероятность достать плохую лампочку
@@ -66,6 +66,18 @@ double Experiment::GetExpectedValue()
 
 	for (int i = 0; i < results.size(); i++)
 		sum += results[i] * probabilities[i];
+
+	return sum;
+}
+
+double Experiment::GetDispersion()
+{
+	SetUpResults();
+	double EV = GetExpectedValue();
+	double sum = 0.0;
+
+	for (int i = 0; i < results.size(); i++)
+		sum += pow((results[i] - EV), 2) * probabilities[i];
 
 	return sum;
 }

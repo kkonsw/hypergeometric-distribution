@@ -27,11 +27,11 @@ public:
 	void SetAmountOfSelected(int const r) { selectedBulbs = r; }
 
 	// характеристики эксперимента
-	double GetExpectedValue();
+	double GetExpectedValue(); // мат. ожидание при текущих параметрах
+	double GetDispersion();	   // дисперсия 
 	
 	// теоретическая вероятность получить k бракованных лампочек
 	double GetProbability(int const k); 
 	int RunExperiment();	 // возвращает результат эксперимента:
 						     // случайное число бракованных лампочек из числа выбранных
-	
 };

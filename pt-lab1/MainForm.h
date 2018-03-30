@@ -15,7 +15,14 @@ namespace ptlab1 {
 	/// Сводка для MainForm
 	/// </summary>
 	public ref class MainForm : public System::Windows::Forms::Form
-	{		
+	{	
+		Experiment* experiment;
+		std::vector<int> *results;		   // все полученные значения СВ
+		std::vector<int> *expandedResults; // все полученные значения СВ (с повторами)
+		std::vector<double> *frequencies;  // частоты полученных значений СВ
+		int rows;		// число строк в таблице
+		int count;		// число проведенных экспериментов
+
 	private: System::Windows::Forms::DataGridView^  dataGridView;		
 	private: System::Windows::Forms::TextBox^  R_textBox;
 	private: System::Windows::Forms::Label^  R_label;			 
@@ -29,7 +36,6 @@ namespace ptlab1 {
 	private: System::Windows::Forms::DataGridView^  dataGridView_table;
 	private: System::Windows::Forms::Label^  table_label;
 	private: System::Windows::Forms::Label^  maxError_label;
-	private: System::Windows::Forms::TextBox^  maxError_textBox;		 
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_1;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_2;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_3;
@@ -38,19 +44,20 @@ namespace ptlab1 {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_6;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_7;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column_8;
-
-			 Experiment* experiment;
-			 std::vector<int> *results;
-			 std::vector<double> *frequencies;
-			 int rows;		// число строк в таблице
-			 int count;		// число проведенных экспериментов
+	private: System::Windows::Forms::TextBox^  maxError_textBox;
+	private: System::Windows::Forms::Button^  mainButton;
+	private: System::Windows::Forms::TextBox^  N_textBox;
+	private: System::Windows::Forms::TextBox^  M_textBox;
+	private: System::Windows::Forms::Label^  N_label;
+	private: System::Windows::Forms::Label^  M_label;
 
 	public:
 		MainForm(void)
 		{
 			experiment = new Experiment();
 			results = new std::vector<int>;
-			frequencies = new std::vector<double>;
+			expandedResults = new std::vector<int>;
+			frequencies = new std::vector<double>;		
 			count = 0; rows = 0;
 
 			InitializeComponent();
@@ -71,13 +78,6 @@ namespace ptlab1 {
 			}
 		}
 
-	protected:
-	private: System::Windows::Forms::Button^  mainButton;
-	private: System::Windows::Forms::TextBox^  N_textBox;
-	private: System::Windows::Forms::TextBox^  M_textBox;
-	private: System::Windows::Forms::Label^  N_label;
-	private: System::Windows::Forms::Label^  M_label;
-
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
@@ -91,10 +91,16 @@ namespace ptlab1 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle7 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle3 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle4 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle5 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle6 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle7 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle8 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle9 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle10 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			this->mainButton = (gcnew System::Windows::Forms::Button());
 			this->N_textBox = (gcnew System::Windows::Forms::TextBox());
 			this->M_textBox = (gcnew System::Windows::Forms::TextBox());
@@ -111,6 +117,9 @@ namespace ptlab1 {
 			this->textBox = (gcnew System::Windows::Forms::TextBox());
 			this->label = (gcnew System::Windows::Forms::Label());
 			this->dataGridView_table = (gcnew System::Windows::Forms::DataGridView());
+			this->table_label = (gcnew System::Windows::Forms::Label());
+			this->maxError_label = (gcnew System::Windows::Forms::Label());
+			this->maxError_textBox = (gcnew System::Windows::Forms::TextBox());
 			this->Column_1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Column_2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Column_3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -119,9 +128,6 @@ namespace ptlab1 {
 			this->Column_6 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Column_7 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Column_8 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->table_label = (gcnew System::Windows::Forms::Label());
-			this->maxError_label = (gcnew System::Windows::Forms::Label());
-			this->maxError_textBox = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_table))->BeginInit();
 			this->SuspendLayout();
@@ -185,8 +191,8 @@ namespace ptlab1 {
 			this->dataGridView->Location = System::Drawing::Point(42, 214);
 			this->dataGridView->Name = L"dataGridView";
 			this->dataGridView->ReadOnly = true;
-			dataGridViewCellStyle7->NullValue = nullptr;
-			this->dataGridView->RowsDefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle3->NullValue = nullptr;
+			this->dataGridView->RowsDefaultCellStyle = dataGridViewCellStyle3;
 			this->dataGridView->Size = System::Drawing::Size(264, 238);
 			this->dataGridView->TabIndex = 7;
 			// 
@@ -211,9 +217,9 @@ namespace ptlab1 {
 			// column3
 			// 
 			this->column3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
-			dataGridViewCellStyle5->Format = L"N4";
-			dataGridViewCellStyle5->NullValue = nullptr;
-			this->column3->DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle1->Format = L"N4";
+			dataGridViewCellStyle1->NullValue = nullptr;
+			this->column3->DefaultCellStyle = dataGridViewCellStyle1;
 			this->column3->HeaderText = L"n_i / n";
 			this->column3->Name = L"column3";
 			this->column3->ReadOnly = true;
@@ -223,9 +229,9 @@ namespace ptlab1 {
 			// Column4
 			// 
 			this->Column4->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::None;
-			dataGridViewCellStyle6->Format = L"N4";
-			dataGridViewCellStyle6->NullValue = nullptr;
-			this->Column4->DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle2->Format = L"N4";
+			dataGridViewCellStyle2->NullValue = nullptr;
+			this->Column4->DefaultCellStyle = dataGridViewCellStyle2;
 			this->Column4->HeaderText = L"p( y_i )";
 			this->Column4->Name = L"Column4";
 			this->Column4->ReadOnly = true;
@@ -291,60 +297,6 @@ namespace ptlab1 {
 			this->dataGridView_table->Size = System::Drawing::Size(460, 46);
 			this->dataGridView_table->TabIndex = 13;
 			// 
-			// Column_1
-			// 
-			dataGridViewCellStyle8->Format = L"N2";
-			dataGridViewCellStyle8->NullValue = nullptr;
-			this->Column_1->DefaultCellStyle = dataGridViewCellStyle8;
-			this->Column_1->HeaderText = L"M";
-			this->Column_1->Name = L"Column_1";
-			this->Column_1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Column_1->Width = 50;
-			// 
-			// Column_2
-			// 
-			this->Column_2->HeaderText = L"M\'";
-			this->Column_2->Name = L"Column_2";
-			this->Column_2->Width = 50;
-			// 
-			// Column_3
-			// 
-			this->Column_3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->Column_3->HeaderText = L"|M-M\'|";
-			this->Column_3->Name = L"Column_3";
-			this->Column_3->Width = 59;
-			// 
-			// Column_4
-			// 
-			this->Column_4->HeaderText = L"D";
-			this->Column_4->Name = L"Column_4";
-			this->Column_4->Width = 50;
-			// 
-			// Column_5
-			// 
-			this->Column_5->HeaderText = L"D\'";
-			this->Column_5->Name = L"Column_5";
-			this->Column_5->Width = 50;
-			// 
-			// Column_6
-			// 
-			this->Column_6->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->Column_6->HeaderText = L"|D-D\'|";
-			this->Column_6->Name = L"Column_6";
-			this->Column_6->Width = 57;
-			// 
-			// Column_7
-			// 
-			this->Column_7->HeaderText = L"Me";
-			this->Column_7->Name = L"Column_7";
-			this->Column_7->Width = 50;
-			// 
-			// Column_8
-			// 
-			this->Column_8->HeaderText = L"R";
-			this->Column_8->Name = L"Column_8";
-			this->Column_8->Width = 50;
-			// 
 			// table_label
 			// 
 			this->table_label->AutoSize = true;
@@ -371,6 +323,85 @@ namespace ptlab1 {
 			this->maxError_textBox->Name = L"maxError_textBox";
 			this->maxError_textBox->Size = System::Drawing::Size(100, 20);
 			this->maxError_textBox->TabIndex = 16;
+			// 
+			// Column_1
+			// 
+			dataGridViewCellStyle4->Format = L"N2";
+			dataGridViewCellStyle4->NullValue = nullptr;
+			this->Column_1->DefaultCellStyle = dataGridViewCellStyle4;
+			this->Column_1->HeaderText = L"M";
+			this->Column_1->Name = L"Column_1";
+			this->Column_1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column_1->Width = 50;
+			// 
+			// Column_2
+			// 
+			dataGridViewCellStyle5->Format = L"N2";
+			dataGridViewCellStyle5->NullValue = nullptr;
+			this->Column_2->DefaultCellStyle = dataGridViewCellStyle5;
+			this->Column_2->HeaderText = L"M\'";
+			this->Column_2->Name = L"Column_2";
+			this->Column_2->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column_2->Width = 50;
+			// 
+			// Column_3
+			// 
+			this->Column_3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			dataGridViewCellStyle6->Format = L"N5";
+			dataGridViewCellStyle6->NullValue = nullptr;
+			this->Column_3->DefaultCellStyle = dataGridViewCellStyle6;
+			this->Column_3->HeaderText = L"|M-M\'|";
+			this->Column_3->Name = L"Column_3";
+			this->Column_3->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column_3->Width = 59;
+			// 
+			// Column_4
+			// 
+			dataGridViewCellStyle7->Format = L"N2";
+			dataGridViewCellStyle7->NullValue = nullptr;
+			this->Column_4->DefaultCellStyle = dataGridViewCellStyle7;
+			this->Column_4->HeaderText = L"D";
+			this->Column_4->Name = L"Column_4";
+			this->Column_4->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column_4->Width = 50;
+			// 
+			// Column_5
+			// 
+			dataGridViewCellStyle8->Format = L"N2";
+			dataGridViewCellStyle8->NullValue = nullptr;
+			this->Column_5->DefaultCellStyle = dataGridViewCellStyle8;
+			this->Column_5->HeaderText = L"D\'";
+			this->Column_5->Name = L"Column_5";
+			this->Column_5->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column_5->Width = 50;
+			// 
+			// Column_6
+			// 
+			this->Column_6->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			dataGridViewCellStyle9->Format = L"N5";
+			dataGridViewCellStyle9->NullValue = nullptr;
+			this->Column_6->DefaultCellStyle = dataGridViewCellStyle9;
+			this->Column_6->HeaderText = L"|D-D\'|";
+			this->Column_6->Name = L"Column_6";
+			this->Column_6->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column_6->Width = 57;
+			// 
+			// Column_7
+			// 
+			dataGridViewCellStyle10->Format = L"N2";
+			dataGridViewCellStyle10->NullValue = nullptr;
+			this->Column_7->DefaultCellStyle = dataGridViewCellStyle10;
+			this->Column_7->HeaderText = L"Me";
+			this->Column_7->Name = L"Column_7";
+			this->Column_7->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column_7->Width = 50;
+			// 
+			// Column_8
+			// 
+			this->Column_8->HeaderText = L"R";
+			this->Column_8->Name = L"Column_8";
+			this->Column_8->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column_8->Width = 50;
 			// 
 			// MainForm
 			// 
@@ -418,6 +449,7 @@ namespace ptlab1 {
 			n = 0;
 			flag = false;
 			result = experiment->RunExperiment();
+			expandedResults->push_back(result); // запоминаем результат
 			count++;
 
 			// ищем результат в таблице
@@ -450,10 +482,10 @@ namespace ptlab1 {
 				rows++;
 			}
 
+			frequencies->clear();
 			// обновление частот с учетом нового эксперимента
 			for (i = 0; i < rows; i++)
 			{
-				frequencies->clear();
 				n = System::Convert::ToDouble(dataGridView->Rows[i]->Cells[1]->Value);
 				dataGridView->Rows[i]->Cells[2]->Value = n / count;
 
@@ -464,6 +496,9 @@ namespace ptlab1 {
 
 		dataGridView->ClearSelection();
 
+		// сортируем все полученные значения (для вычисления медианы и размаха выборки)
+		std::sort(expandedResults->begin(), expandedResults->end()); 
+
 		// также требуется рассчитать характеристики
 		CalculateCharacteristics();	
 	}
@@ -472,22 +507,72 @@ namespace ptlab1 {
 		dataGridView->Rows->Clear();
 		dataGridView_table->Rows->Clear();
 		frequencies->clear();
-		results->clear();		
+		results->clear();	
+		expandedResults->clear();
 		count = 0;
 		rows = 0;
 	}
 
-	// расчет основных характеристик для таблицы
+	// расчет основных характеристик на основе проведенных экспериментов
 	protected: void CalculateCharacteristics() {
 		// пересоздаем условия эксперимента
 		experiment->SetAmountOfLightbulbs(System::Convert::ToInt32(N_textBox->Text));
 		experiment->SetAmountOfSelected(System::Convert::ToInt32(R_textBox->Text));
 		experiment->SetAmountOfDamaged(System::Convert::ToInt32(M_textBox->Text));
 
-		double ExpectedValue = experiment->GetExpectedValue();
+		double theoryEV = experiment->GetExpectedValue();
+		double realEV = GetExpectedValue();
+		double theoryD = experiment->GetDispersion();
+		double realD = GetDispersion();
+		double median = GetMedian();
 
 		dataGridView_table->Rows->Clear();
-		dataGridView_table->Rows[0]->Cells[0]->Value = ExpectedValue;
+		dataGridView_table->Rows[0]->Cells[0]->Value = theoryEV; // теоретическое мат. ожидание
+		dataGridView_table->Rows[0]->Cells[1]->Value = realEV;	 // выборочное мат. ожидание
+		dataGridView_table->Rows[0]->Cells[2]->Value = fabs(theoryEV - realEV);	// отклонение мат. ожидания от теоретического
+		dataGridView_table->Rows[0]->Cells[3]->Value = theoryD;  // теоретическая дисперсия
+		dataGridView_table->Rows[0]->Cells[4]->Value = realD;    // выборочная дисперсия
+		dataGridView_table->Rows[0]->Cells[5]->Value = fabs(theoryD - realD);   // отклонение дисперсии
+		dataGridView_table->Rows[0]->Cells[6]->Value = median;
+		dataGridView_table->ClearSelection();
 	}
+
+	// математическое ожидание по проведенным экспериментам
+	protected: double GetExpectedValue() {
+		double sum = 0.0;
+
+		for (int i = 0; i < results->size(); i++)
+			sum += results->at(i) * frequencies->at(i);
+
+		return sum;
+	}
+	
+	// дисперсия по проведенным экспериментам
+	protected: double GetDispersion() {
+		double EV = GetExpectedValue();
+		double sum = 0.0;
+
+		for (int i = 0; i < results->size(); i++)
+			sum += pow((results->at(i) - EV), 2) * frequencies->at(i);
+
+		return sum;
+	}
+
+	protected: double GetMedian() {
+		double median = 0.0;
+		int size = expandedResults->size();
+
+		if (size == 1) median = expandedResults->at(size - 1);
+		else
+		{
+			if (size % 2 == 0)
+				median = (double)(expandedResults->at(size/2 - 1) + expandedResults->at(size/2)) / 2;
+			else
+				median = expandedResults->at(size/2);		
+		}
+
+		return median;
+	}
+
 };
 }
