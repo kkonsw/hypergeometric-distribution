@@ -54,7 +54,6 @@ namespace ptlab1 {
 	private: System::Windows::Forms::Label^  graphics_label;
 	private: System::Windows::Forms::Label^  divergency_label;
 	private: System::Windows::Forms::TextBox^  divergency_textBox;
-
 	private: System::Windows::Forms::Label^  M_label;
 
 	public:
@@ -405,11 +404,11 @@ namespace ptlab1 {
 			// maxError_label
 			// 
 			this->maxError_label->AutoSize = true;
-			this->maxError_label->Location = System::Drawing::Point(452, 114);
+			this->maxError_label->Location = System::Drawing::Point(566, 114);
 			this->maxError_label->Name = L"maxError_label";
-			this->maxError_label->Size = System::Drawing::Size(230, 13);
+			this->maxError_label->Size = System::Drawing::Size(114, 13);
 			this->maxError_label->TabIndex = 15;
-			this->maxError_label->Text = L"Максимальное отклонение | n_i/n - p(y_i) | = ";
+			this->maxError_label->Text = L"Макс. отклонение  = ";
 			// 
 			// maxError_textBox
 			// 
@@ -431,6 +430,7 @@ namespace ptlab1 {
 			chartArea1->BackColor = System::Drawing::Color::White;
 			chartArea1->Name = L"ChartArea1";
 			this->chart->ChartAreas->Add(chartArea1);
+			legend1->Enabled = false;
 			legend1->MaximumAutoSize = 80;
 			legend1->Name = L"Legend1";
 			legend1->Position->Auto = false;
@@ -471,7 +471,7 @@ namespace ptlab1 {
 			// divergency_label
 			// 
 			this->divergency_label->AutoSize = true;
-			this->divergency_label->Location = System::Drawing::Point(566, 160);
+			this->divergency_label->Location = System::Drawing::Point(566, 159);
 			this->divergency_label->Name = L"divergency_label";
 			this->divergency_label->Size = System::Drawing::Size(116, 13);
 			this->divergency_label->TabIndex = 19;
@@ -518,7 +518,6 @@ namespace ptlab1 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
 #pragma endregion
 

@@ -95,7 +95,9 @@ System::Void ptlab1::MainForm::delete_button_Click(System::Object ^ sender, Syst
 	frequencies->clear();
 	results->clear();
 	expandedResults->clear();
+	chart->Legends[0]->Enabled = false;
 	maxError_textBox->Text = "";
+	divergency_textBox->Text = "";
 	count = 0;
 	rows = 0;
 }
@@ -188,6 +190,7 @@ void ptlab1::MainForm::DrawGraphics()
 {	
 	chart->Series[0]->Points->Clear();
 	chart->Series[1]->Points->Clear();
+	chart->Legends[0]->Enabled = true;
 
 	// пересоздаем условия эксперимента для построения теор. ф-ии распределения
 	experiment->SetAmountOfLightbulbs(System::Convert::ToInt32(N_textBox->Text));
@@ -195,20 +198,22 @@ void ptlab1::MainForm::DrawGraphics()
 	experiment->SetAmountOfDamaged(System::Convert::ToInt32(M_textBox->Text));
 
 	double sum = 0.0;
-
+	
 	// теоретическая функция распределения
 	int res_min = experiment->GetMinResult();
 	int res_max = experiment->GetMaxResult();
+	array<double>^ div = gcnew array<double>(res_max + 1); // массив для хранения значений функции распределения
 	chart->ChartAreas[0]->AxisX->Maximum = res_max + 1;
 	chart->Series[0]->Points->AddXY(0, 0);
 	for (int x = res_min; x <= res_max; x++)
 	{
 		sum += experiment->GetProbability(x);
+		div[x] = sum;
 		chart->Series[0]->Points->AddXY(x, sum);
 	}
 	chart->Series[0]->Points->AddXY(res_max + 1, 1);
 	
-	// выборочная функция распределения
+	// выборочная функция распределения 
 	sum = 0.0;
 	chart->Series[1]->Points->AddXY(0, 0);
 	for (int i = 0; i < results->size(); i++)
@@ -217,4 +222,23 @@ void ptlab1::MainForm::DrawGraphics()
 		chart->Series[1]->Points->AddXY(results->at(i), sum);	
 	}
 	chart->Series[1]->Points->AddXY(res_max + 1, 1);
+
+	// вычисление меры расхождения
+	int x = 0;
+	double divergence = 0.0;
+	double d1 = 0.0;
+	double d2 = 0.0;
+	double d_max = 0.0;
+	double  f = 0.0;
+	for (int j = 1; j <= expandedResults->size(); j++)
+	{
+		x = expandedResults->at(j - 1);
+		f = div[x];
+		d1 = ((double)j / count) - f;
+		d2 = f - experiment->GetProbability(x) - ((double)(j-1)/count);
+		d_max = std::max(d1, d2);
+		if (divergence < d_max) divergence = d_max;
+	}
+	
+	divergency_textBox->Text = System::Convert::ToString(divergence);
 }
