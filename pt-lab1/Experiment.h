@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "RandomValue.h"
 
 class Experiment
@@ -8,9 +9,12 @@ protected:
 	int lightbulbs;		 // общее число лампочек
 	int damagedBulbs;	 // перегоревшие лампочки
 	int selectedBulbs;	 // число выбранных лампочек
+	std::vector<int> results;		   // все возможные результаты текущего эксперимента
+	std::vector<double> probabilities; // теоретические вероятности, соответствующие результатам
 
 	int GetOneBulb();	 // взять лампочку, возвращает 1 если перегоревшая
 	int C(int n, int k); // число сочетаний (C из n по k)
+	void SetUpResults(); // рассчитать возможные исходы и вероятности текущего эксперимента
 public:
 	Experiment();
 	Experiment(int n, int m, int r);
@@ -21,6 +25,9 @@ public:
 	void SetAmountOfLightbulbs(int const n) { lightbulbs = n; }
 	void SetAmountOfDamaged(int const m) { damagedBulbs = m; }
 	void SetAmountOfSelected(int const r) { selectedBulbs = r; }
+
+	// характеристики эксперимента
+	double GetExpectedValue();
 	
 	// теоретическая вероятность получить k бракованных лампочек
 	double GetProbability(int const k); 

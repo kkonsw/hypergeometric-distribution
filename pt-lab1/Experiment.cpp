@@ -33,6 +33,43 @@ int Experiment::C(int n, int k)
 	return C(n - 1, k - 1) * n / k;
 }
 
+void Experiment::SetUpResults()
+{
+	int n = GetAmountOfLightbulbs();
+	int m = GetAmountOfDamaged();
+	int r = GetAmountOfSelected();
+	int k_max = r; // максимально возможное число испорченных лампочек
+	int k_min = 0; // минимально возможное число испорченных лампочек
+
+	int tmp = r - n + m;
+
+	if (tmp < 0) k_min = 0;
+	else k_min = tmp;
+
+	if (m < r) k_max = m;
+	else k_max = r;
+
+	results.clear();
+	for (int k = k_min; k <= k_max; k++)
+		results.push_back(k); // добавл€ем возможные результаты в пор€дке возрастани€
+
+	probabilities.clear();
+	for (int& t : results)
+		probabilities.push_back(GetProbability(t));
+	// добавл€ем теоретические веро€тности в соответствующем пор€дке
+}
+
+double Experiment::GetExpectedValue()
+{
+	SetUpResults();
+	double sum = 0.0;
+
+	for (int i = 0; i < results.size(); i++)
+		sum += results[i] * probabilities[i];
+
+	return sum;
+}
+
 double Experiment::GetProbability(int const k)
 {
 	int n = GetAmountOfLightbulbs();
