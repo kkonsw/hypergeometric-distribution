@@ -18,6 +18,7 @@ protected:
 	int GetOneBulb();	 // взять лампочку, возвращает 1 если перегоревшая
 	int C(int n, int k); // число сочетаний (C из n по k)
 	void SetUpResults(); // рассчитать возможные исходы и вероятности текущего эксперимента
+
 public:
 	Experiment();
 	Experiment(int n, int m, int r);
