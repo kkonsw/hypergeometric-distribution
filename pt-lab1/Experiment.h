@@ -1,5 +1,7 @@
 #pragma once
+
 #include <vector>
+
 #include "RandomValue.h"
 
 class Experiment
@@ -35,6 +37,9 @@ public:
 	double GetDispersion();	   // дисперсия 
 	int GetMinResult() { return result_min;  }
 	int GetMaxResult() { return result_max;  }
+
+    std::vector<int> GetResults() { return results; }
+    std::vector<double> GetProbabilities() { return probabilities; }
 	
 	// теоретическая вероятность получить k бракованных лампочек
 	double GetProbability(int const k); 

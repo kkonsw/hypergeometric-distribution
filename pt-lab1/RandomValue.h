@@ -1,6 +1,8 @@
 #pragma once
+
 #include <cstdio>
 #include <cstdlib>
+
 #include <time.h>
 
 class RandomValue

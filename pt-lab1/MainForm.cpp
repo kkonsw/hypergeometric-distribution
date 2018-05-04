@@ -64,8 +64,9 @@ System::Void ptlab1::MainForm::mainButton_Click(System::Object ^ sender, System:
 			rows++;
 		}
 
-		frequencies->clear();
-		// обновление частот с учетом нового эксперимента
+        // обновление частот с учетом нового эксперимента
+		frequencies->clear();		
+
 		for (i = 0; i < rows; i++)
 		{
 			n = System::Convert::ToDouble(dataGridView->Rows[i]->Cells[1]->Value);
@@ -241,4 +242,90 @@ void ptlab1::MainForm::DrawGraphics()
 	}
 	
 	divergency_textBox->Text = System::Convert::ToString(divergence);
+}
+
+System::Void ptlab1::MainForm::button_save_Click(System::Object ^ sender, System::EventArgs ^ e)
+{
+    k = System::Convert::ToInt32(textBox_intervals->Text);
+
+    z->clear();
+    z->resize(k + 1, 0.0);
+    z->at(0) = std::numeric_limits<double>::lowest();
+    z->at(k) = std::numeric_limits<double>::max();
+
+    if (radioButton1->Checked) // автоматический выбор интервалов
+    {
+        z->at(1) = results->at(0) - 0.5;
+        z->at(k - 1) = results->back() + 0.5;
+
+        double interval = (z->at(k - 1) - z->at(1)) / (double)(k-2);
+
+        for (int i = 2; i < k - 1; i++)
+        {
+            z->at(i) = z->at(i - 1) + interval;
+        }
+    }
+
+    // ручной выбор границ интервалов
+    if (radioButton2->Checked) 
+    {
+        for (int i = 1; i <= k-1; i++)
+        {
+            // считываем значения с таблицы
+            z->at(i) = System::Convert::ToDouble(dataGridView_intervals->Rows[i]->Cells[1]->Value);
+        }
+    }
+
+    dataGridView_intervals->Rows->Clear();
+    for (int i = 0; i <= k; i++)
+    {       
+        dataGridView_intervals->Rows->Add();
+        dataGridView_intervals->Rows[i]->Cells[0]->Value = i;
+        if (i == 0) dataGridView_intervals->Rows[i]->Cells[1]->Value = - std::numeric_limits<double>::infinity();
+        else if (i == k) dataGridView_intervals->Rows[i]->Cells[1]->Value = std::numeric_limits<double>::infinity();
+        else dataGridView_intervals->Rows[i]->Cells[1]->Value = z->at(i);
+    }
+    dataGridView_intervals->ClearSelection();
+}
+
+System::Void ptlab1::MainForm::button_distribution_Click(System::Object ^ sender, System::EventArgs ^ e)
+{   
+    std::vector<int> exp_results = experiment->GetResults();
+    std::vector<double> exp_probabilities = experiment->GetProbabilities();
+    std::vector<int> n;  // n[j] - число наблюдений, попавших в интервал [z[j], z[j+1]]
+
+    q->clear();
+    q->resize(k + 1, 0.0);
+
+    n.resize(k + 1, 0);
+
+    // вычисление теоретических вероятностей
+    for (int i = 0; i < exp_results.size(); i++)
+    {
+        for (int j = 0; j < z->size() - 1; j++)
+        {
+            //  если теоретическое значение попадает в интервал [z[j], z[j+1]]
+            if (((double)exp_results[i] > z->at(j)) && ((double)exp_results[i] < z->at(j + 1)))
+                q->at(j + 1) += exp_probabilities[i]; // q[j] - сумма теоретических вероятностей, значений попавших в интервал           
+        }
+    }
+
+    // вычисление n[j] - числа значений попавших в интервал [z[j], z[j+1]]
+    // expandedResults - все получившиеся наблюдения (с повторами)
+    for (int i = 0; i < expandedResults->size(); i++)
+    {
+        for (int j = 0; j < z->size() - 1; j++)
+        {
+            //  если значение эксперимента попадает в интервал [z[j], z[j+1]]
+            if (((double)expandedResults->at(i) > z->at(j)) && ((double)expandedResults->at(i) < z->at(j + 1)))
+                n[j+1] ++; // увеличиваем счетчик числа наблюдений, попавших в интервал           
+        }
+    }
+
+    // добавляем полученные значения в таблицу
+    for (int j = 1; j <= k; j++)
+    {
+        dataGridView_intervals->Rows[j]->Cells[2]->Value = n[j];
+        dataGridView_intervals->Rows[j]->Cells[3]->Value = q->at(j);
+    }
 }
