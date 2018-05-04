@@ -18,6 +18,7 @@ System::Void ptlab1::MainForm::mainButton_Click(System::Object ^ sender, System:
 {
 	double n;
 	bool flag = false;
+    totalExperiments += System::Convert::ToInt32(textBox->Text);
 	int nExperiments = System::Convert::ToInt32(textBox->Text);
 	int i = 0;
 	int result;
@@ -101,6 +102,9 @@ System::Void ptlab1::MainForm::delete_button_Click(System::Object ^ sender, Syst
 	divergency_textBox->Text = "";
 	count = 0;
 	rows = 0;
+    totalExperiments = 0;
+    textBox_R0->Text = "";
+    label_hypothesis->Text = "";
 }
 
 double ptlab1::MainForm::GetExpectedValue()
@@ -255,8 +259,8 @@ System::Void ptlab1::MainForm::button_save_Click(System::Object ^ sender, System
 
     if (radioButton1->Checked) // автоматический выбор интервалов
     {
-        z->at(1) = results->at(0) - 0.5;
-        z->at(k - 1) = results->back() + 0.5;
+        z->at(1) = results->at(0) + 0.5;
+        z->at(k - 1) = results->back() - 0.5;
 
         double interval = (z->at(k - 1) - z->at(1)) / (double)(k-2);
 
@@ -293,10 +297,14 @@ System::Void ptlab1::MainForm::button_distribution_Click(System::Object ^ sender
     std::vector<int> exp_results = experiment->GetResults();
     std::vector<double> exp_probabilities = experiment->GetProbabilities();
     std::vector<int> n;  // n[j] - число наблюдений, попавших в интервал [z[j], z[j+1]]
+    double r = 0.0;      // статистика критерия
+    double eps = 1.0e-6;
+    alpha = System::Convert::ToDouble(textBox_alpha->Text); // критерий значимости
 
     q->clear();
     q->resize(k + 1, 0.0);
 
+    n.clear();
     n.resize(k + 1, 0);
 
     // вычисление теоретических вероятностей
@@ -318,7 +326,7 @@ System::Void ptlab1::MainForm::button_distribution_Click(System::Object ^ sender
         {
             //  если значение эксперимента попадает в интервал [z[j], z[j+1]]
             if (((double)expandedResults->at(i) > z->at(j)) && ((double)expandedResults->at(i) < z->at(j + 1)))
-                n[j+1] ++; // увеличиваем счетчик числа наблюдений, попавших в интервал           
+                n[j+1]++; // увеличиваем счетчик числа наблюдений, попавших в интервал           
         }
     }
 
@@ -328,4 +336,22 @@ System::Void ptlab1::MainForm::button_distribution_Click(System::Object ^ sender
         dataGridView_intervals->Rows[j]->Cells[2]->Value = n[j];
         dataGridView_intervals->Rows[j]->Cells[3]->Value = q->at(j);
     }
+
+    // вычисление статистики критерия ( R0 )
+    for (int j = 1; j <= k; j++)
+    {
+        // проверка на ноль
+        if (!(q->at(j) < eps && q->at(j) > -eps))
+            r += (pow(((double)n[j] - (double)totalExperiments * q->at(j)), 2.0) / ((double)totalExperiments * q->at(j)));
+    }
+
+    textBox_R0->Text = System::Convert::ToString(r);
+
+    double res = F(r, k - 1);
+    textBox_F->Text = System::Convert::ToString(res);
+
+    if (res < alpha)
+        label_hypothesis->Text =  "Гипотеза принята";
+    else
+        label_hypothesis->Text = "Гипотеза отклонена";
 }
