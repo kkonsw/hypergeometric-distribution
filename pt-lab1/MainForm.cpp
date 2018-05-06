@@ -350,7 +350,7 @@ System::Void ptlab1::MainForm::button_distribution_Click(System::Object ^ sender
     double res = F(r, k - 1);
     textBox_F->Text = System::Convert::ToString(res);
 
-    if (res < alpha)
+    if (res > alpha)
         label_hypothesis->Text =  "Гипотеза принята";
     else
         label_hypothesis->Text = "Гипотеза отклонена";
