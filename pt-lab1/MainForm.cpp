@@ -19,6 +19,7 @@ System::Void ptlab1::MainForm::mainButton_Click(System::Object ^ sender, System:
 	double n;
 	bool flag = false;
     totalExperiments += System::Convert::ToInt32(textBox->Text);
+    textBox_nExperiments->Text = System::Convert::ToString(totalExperiments);
 	int nExperiments = System::Convert::ToInt32(textBox->Text);
 	int i = 0;
 	int result;
@@ -104,9 +105,11 @@ System::Void ptlab1::MainForm::delete_button_Click(System::Object ^ sender, Syst
 	rows = 0;
     totalExperiments = 0;
     textBox_R0->Text = "";
+    textBox_nExperiments->Text = "";
     label_hypothesis->Text = "";
 }
 
+// вычисление выборочного среднего
 double ptlab1::MainForm::GetExpectedValue()
 {
 	double sum = 0.0;
@@ -117,6 +120,7 @@ double ptlab1::MainForm::GetExpectedValue()
 	return sum;
 }
 
+// вычисление выборочной дисперсии
 double ptlab1::MainForm::GetDispersion()
 {
 	double EV = GetExpectedValue();
@@ -128,6 +132,7 @@ double ptlab1::MainForm::GetDispersion()
 	return sum;
 }
 
+// вычисление выборочной медианы
 double ptlab1::MainForm::GetMedian()
 {
 	double median = 0.0;
